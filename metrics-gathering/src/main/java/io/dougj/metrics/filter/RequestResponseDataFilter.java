@@ -35,10 +35,8 @@ public class RequestResponseDataFilter implements Filter {
                 uniqueRequestIdentifier);
         MetricGatheringResponseWrapper responseWrapper
                 = new MetricGatheringResponseWrapper((HttpServletResponse)response, uniqueRequestIdentifier);
-        //responseWrapper.setHeader(Util.REQUEST_ID_HEADER, uniqueRequestIdentifier);
         try {
             chain.doFilter(request, responseWrapper);
-            //responseWrapper.flushBuffer();
         } finally {
             metricService.collectRequestResponseData((HttpServletRequest) request, responseWrapper, uniqueRequestIdentifier);
         }

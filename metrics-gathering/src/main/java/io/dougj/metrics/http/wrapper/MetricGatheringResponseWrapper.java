@@ -51,6 +51,11 @@ public class MetricGatheringResponseWrapper extends HttpServletResponseWrapper {
         writer.flush();
     }
 
+    /**
+     * start time of request to track processing time
+     *
+     * @return time when request processing began by filter
+     */
     public Instant getProcessingStartTime() {
         return processingStartTime;
     }

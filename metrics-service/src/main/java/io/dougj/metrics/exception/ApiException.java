@@ -7,8 +7,6 @@ public class ApiException extends RuntimeException {
 
     private final ResponseEntity<?> responseEntity;
 
-    /*public ApiException(ResponseEntity<?> responseEntity) {this.responseEntity = responseEntity;}*/
-
     public ApiException(String message, ResponseEntity<?> responseEntity) {
         super(message);
         this.responseEntity = responseEntity;

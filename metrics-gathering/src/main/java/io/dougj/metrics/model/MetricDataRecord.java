@@ -11,7 +11,7 @@ public class MetricDataRecord {
     private String requestURI;
     private String httpMethod;
     private Integer httpStatus;
-    private Date createdTimeStampUtc;
+    private final Date createdTimeStampUtc;
 
     public MetricDataRecord() {
         this.createdTimeStampUtc = Date.from(LocalDateTime.now().toInstant(ZoneOffset.of("Z")));
