@@ -1,7 +1,7 @@
 ### _**Java Instrumentation Engineer Project**_
 ***
-#### Travis-CI Build Status:
-[![Build Status](https://app.travis-ci.com/dougj0220/metrics-service-parent.svg?branch=master)](https://app.travis-ci.com/dougj0220/metrics-service-parent)
+#### Travis-CI Build | Codecov Status:
+[![Build Status](https://app.travis-ci.com/dougj0220/metrics-service-parent.svg?branch=master)](https://app.travis-ci.com/dougj0220/metrics-service-parent) [![codecov](https://codecov.io/gh/dougj0220/metrics-service-parent/branch/master/graph/badge.svg?token=4KXSZHUQ0M)](https://codecov.io/gh/dougj0220/metrics-service-parent)
 ***
 #### _Project Info_:
 Simple metric gathering library with a Servlet Filter implementation that tracks request lifecycle processing times and response payload sizes in bytes. The project provides a metrics API to get min, max, average request times and response sizes in bytes. You can also call an API with a specific requestId to view the metrics of that particular request. The project uses in-memory data store and metrics-service REST API to gather data are report using spring-boot 2.6.4 and JBoss undertow web server.
