@@ -1,7 +1,5 @@
 package io.dougj.metrics.model;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 public class MetricDataRecord {
@@ -14,7 +12,7 @@ public class MetricDataRecord {
     private final Date createdTimeStampUtc;
 
     public MetricDataRecord() {
-        this.createdTimeStampUtc = Date.from(LocalDateTime.now().toInstant(ZoneOffset.of("Z")));
+        this.createdTimeStampUtc = new Date();
     }
 
     public Long getRequestTimeMillis() {return requestTimeMillis;}

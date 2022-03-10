@@ -41,4 +41,12 @@ public class AppServiceImpl implements AppService {
 
         return appDataDto;
     }
+
+    /**
+     * just for testing purposes...
+     * @param String versionText
+     */
+    public void setVersionText(String versionText) {
+        this.versionText = versionText;
+    }
 }

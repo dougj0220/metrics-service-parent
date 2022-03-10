@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping(HttpUtil.METRICS_API)
 public class MetricController {
@@ -53,7 +52,7 @@ public class MetricController {
     public ResponseEntity<?> findByUniqueIdentifier(@PathVariable String requestId) {
 
         try {
-            if (StringUtils.isEmpty(requestId)) {
+            if (StringUtils.isBlank(requestId)) {
                 LOG.info("findByUniqueIdentifier() missing required requestId");
                 return HttpUtil.getResponse(MetricErrorCodes.METRIC_ERROR_UUID_REQUIRED);
             }
