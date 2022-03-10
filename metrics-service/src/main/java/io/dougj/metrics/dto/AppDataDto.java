@@ -1,6 +1,8 @@
 package io.dougj.metrics.dto;
 
-public class AppDataDto {
+import java.io.Serializable;
+
+public class AppDataDto implements Serializable {
 
     private String applicationName;
 

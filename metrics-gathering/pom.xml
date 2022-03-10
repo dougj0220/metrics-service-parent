@@ -19,6 +19,9 @@
         <commons.io.version>2.11.0</commons.io.version>
         <commons.collections.version>4.4</commons.collections.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
+        <junit.version>4.13.2</junit.version>
+        <mockito.version>1.10.19</mockito.version>
+        <spring.test.version>5.3.16</spring.test.version>
     </properties>
 
     <dependencies>
@@ -57,7 +60,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <!--<dependency>
@@ -69,13 +72,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.3.16</version>
+            <version>${spring.test.version}</version>
             <scope>test</scope>
         </dependency>
 

@@ -20,4 +20,4 @@ Simple metric gathering library with a Servlet Filter implementation that tracks
 - from project root run: `mvn clean package`
 - start undertow web server with app running on http://localhost:8082 `java -jar metrics-service/target/metrics-service-0.0.1-SNAPSHOT.jar`
 - use Postman, curl, httpie and make a GET request to: `http://localhost:8082/api/v1/app/version`
-- explore other endpoints
+- explore other endpoints using Open API (Swagger-ui): `http://localhost:8082/swagger-ui/index.html`
