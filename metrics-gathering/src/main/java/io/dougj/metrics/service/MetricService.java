@@ -35,13 +35,18 @@ public class MetricService {
         initMetricDataRecordsStorage();
     }
 
-    public synchronized static MetricService getInstance() {
-        if (INSTANCE == null) {
-            LOG.info("creating new singleton instance of MetricService!!!");
-            INSTANCE = new MetricService();
+    public static MetricService getInstance() {
+        if (INSTANCE != null) {
+            LOG.info("returning existing singleton instance of MetricService...");
+            return INSTANCE;
+        }
+        synchronized (MetricService.class) {
+            if (INSTANCE == null) {
+                LOG.info("creating new singleton instance of MetricService!!!");
+                INSTANCE = new MetricService();
+            }
         }
 
-        LOG.info("returning existing singleton instance of MetricService...");
         return INSTANCE;
     }
 
@@ -85,13 +90,15 @@ public class MetricService {
             LOG.info("call to getAllRequestResponseMetrics() is returning null, no data to report on");
             return null;
         }
+        List<Long> requestTimes = metricDataRecordsStorage.get(HttpUtil.REQUEST_TIME_LIST_KEY);
+        List<Long> responseSizes = metricDataRecordsStorage.get(HttpUtil.RESPONSE_SIZE_LIST_KEY);
         JsonObject payload = new JsonObject();
-        payload.addProperty(HttpUtil.REQUEST_TIME_MINIMUM_KEY, String.valueOf(getRequestTimeMinimum()));
-        payload.addProperty(HttpUtil.REQUEST_TIME_MAXIMUM_KEY, String.valueOf(getRequestTimeMaximum()));
-        payload.addProperty(HttpUtil.REQUEST_TIME_AVERAGE_KEY, String.valueOf(getRequestTimeAverage()));
-        payload.addProperty(HttpUtil.RESPONSE_SIZE_MINIMUM_KEY, String.valueOf(getResponseSizeMinimum()));
-        payload.addProperty(HttpUtil.RESPONSE_SIZE_MAXIMUM_KEY, String.valueOf(getResponseSizeMaximum()));
-        payload.addProperty(HttpUtil.RESPONSE_SIZE_AVERAGE_KEY, String.valueOf(getResponseSizeAverage()));
+        payload.addProperty(HttpUtil.REQUEST_TIME_MINIMUM_KEY, String.valueOf(getRequestTimeMinimum(requestTimes)));
+        payload.addProperty(HttpUtil.REQUEST_TIME_MAXIMUM_KEY, String.valueOf(getRequestTimeMaximum(requestTimes)));
+        payload.addProperty(HttpUtil.REQUEST_TIME_AVERAGE_KEY, String.valueOf(getRequestTimeAverage(requestTimes)));
+        payload.addProperty(HttpUtil.RESPONSE_SIZE_MINIMUM_KEY, String.valueOf(getResponseSizeMinimum(responseSizes)));
+        payload.addProperty(HttpUtil.RESPONSE_SIZE_MAXIMUM_KEY, String.valueOf(getResponseSizeMaximum(responseSizes)));
+        payload.addProperty(HttpUtil.RESPONSE_SIZE_AVERAGE_KEY, String.valueOf(getResponseSizeAverage(responseSizes)));
 
         return payload;
     }
@@ -150,11 +157,10 @@ public class MetricService {
     }
 
     /**
-     *
+     * @param requestTimes - List<Long>
      * @return the minimum request time for all requests or default to 0
      */
-    private Long getRequestTimeMinimum() {
-        List<Long> requestTimes = metricDataRecordsStorage.get(HttpUtil.REQUEST_TIME_LIST_KEY);
+    private Long getRequestTimeMinimum(List<Long> requestTimes) {
         // Arrays.sort(requestTimes.toArray());
         // requestTimes.get(0)
         return requestTimes.stream()
@@ -164,11 +170,10 @@ public class MetricService {
     }
 
     /**
-     *
+     * @param requestTimes - List<Long>
      * @return the average request time for all requests or default to 0.0
      */
-    private Double getRequestTimeAverage() {
-        List<Long> requestTimes = metricDataRecordsStorage.get(HttpUtil.REQUEST_TIME_LIST_KEY);
+    private Double getRequestTimeAverage(List<Long> requestTimes) {
         return requestTimes.stream()
                 .mapToDouble(a -> a)
                 .average()
@@ -176,11 +181,10 @@ public class MetricService {
     }
 
     /**
-     *
+     * @param requestTimes - List<Long>
      * @return the maximum request time for all requests or default to 0
      */
-    private Long getRequestTimeMaximum() {
-        List<Long> requestTimes = metricDataRecordsStorage.get(HttpUtil.REQUEST_TIME_LIST_KEY);
+    private Long getRequestTimeMaximum(List<Long> requestTimes) {
         // Arrays.sort(requestTimes.toArray());
         // requestTimes.get(requestTimes.size()-1)
         return requestTimes.stream()
@@ -190,29 +194,26 @@ public class MetricService {
     }
 
     /**
-     *
+     * responseSizes - List<Long>
      * @return the minimum response size for all responses or default to 0
      */
-    private Long getResponseSizeMinimum() {
-        List<Long> responseSizes = metricDataRecordsStorage.get(HttpUtil.RESPONSE_SIZE_LIST_KEY);
+    private Long getResponseSizeMinimum(List<Long> responseSizes) {
         return Collections.min(responseSizes);
     }
 
     /**
-     *
+     * responseSizes - List<Long>
      * @return the maximum response size for all responses or default to 0
      */
-    private Long getResponseSizeMaximum() {
-        List<Long> responseSizes = metricDataRecordsStorage.get(HttpUtil.RESPONSE_SIZE_LIST_KEY);
+    private Long getResponseSizeMaximum(List<Long> responseSizes) {
         return Collections.max(responseSizes);
     }
 
     /**
-     *
+     * responseSizes - List<Long>
      * @return the average response size for all responses or default to 0.0
      */
-    private Double getResponseSizeAverage() {
-        List<Long> responseSizes = metricDataRecordsStorage.get(HttpUtil.RESPONSE_SIZE_LIST_KEY);
+    private Double getResponseSizeAverage(List<Long> responseSizes) {
         return responseSizes.stream()
                 .mapToDouble(a -> a)
                 .average()

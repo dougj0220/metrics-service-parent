@@ -6,6 +6,7 @@ import io.dougj.metrics.util.HttpUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 @Configuration
@@ -32,7 +33,7 @@ public class FilterConfig {
         FilterRegistrationBean<RequestResponseDataFilter> registrationBean  = new FilterRegistrationBean<>();
         registrationBean.setFilter(new RequestResponseDataFilter(metricServiceInstance()));
         registrationBean.addUrlPatterns(HttpUtil.API_ROOT + "/*"); // capture all endpoint data
-        registrationBean.setOrder(1);   // want this filter to fire first in order of precedence
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);   // want this filter to fire first in order of precedence
 
         return registrationBean;
     }

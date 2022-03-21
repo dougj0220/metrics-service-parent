@@ -14,6 +14,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.UUID;
 
 
@@ -35,6 +36,7 @@ public class RequestResponseDataFilter implements Filter {
                 uniqueRequestIdentifier);
         MetricGatheringResponseWrapper responseWrapper
                 = new MetricGatheringResponseWrapper((HttpServletResponse)response, uniqueRequestIdentifier);
+        responseWrapper.setProcessingStartTime(Instant.now());  // start request processing timer now
         try {
             chain.doFilter(request, responseWrapper);
         } finally {
