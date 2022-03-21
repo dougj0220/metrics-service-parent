@@ -18,7 +18,7 @@ public class MetricGatheringResponseWrapper extends HttpServletResponseWrapper {
     private final MetricGatheringServletOutputStream countingOutputStream;
     private final PrintWriter writer;
 
-    private final Instant processingStartTime;
+    private Instant processingStartTime;
 
     public MetricGatheringResponseWrapper(HttpServletResponse response,
                                           String uniqueRequestIdentifier) throws IOException {
@@ -27,7 +27,6 @@ public class MetricGatheringResponseWrapper extends HttpServletResponseWrapper {
         this.countingOutputStream = new MetricGatheringServletOutputStream(response.getOutputStream());
         OutputStreamWriter streamWriter = new OutputStreamWriter(countingOutputStream, StandardCharsets.UTF_8);
         this.writer = new PrintWriter(streamWriter);
-        this.processingStartTime = Instant.now();
         this.setHeader(HttpUtil.REQUEST_ID_HEADER, uniqueRequestIdentifier);    // set unique identifier in response header
     }
 
@@ -58,6 +57,15 @@ public class MetricGatheringResponseWrapper extends HttpServletResponseWrapper {
      */
     public Instant getProcessingStartTime() {
         return processingStartTime;
+    }
+
+
+    /**
+     * Set request processing start time
+     * @param processingStartTime - Instant
+     */
+    public void setProcessingStartTime(Instant processingStartTime) {
+        this.processingStartTime = processingStartTime;
     }
 
     /**

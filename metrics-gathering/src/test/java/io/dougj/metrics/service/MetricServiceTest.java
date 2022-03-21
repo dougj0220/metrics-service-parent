@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -29,9 +30,14 @@ public class MetricServiceTest {
     private final static String REQUEST_ID = UUID.randomUUID().toString();
     private MetricService metricService;
 
+    private MetricGatheringResponseWrapper responseWrapper;
+
     @Before
-    public void setup() {
+    public void setup() throws IOException {
         metricService = MetricService.getInstance();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        responseWrapper = new MetricGatheringResponseWrapper(response, REQUEST_ID);
+        responseWrapper.setProcessingStartTime(Instant.now());
     }
 
     @Test
@@ -50,8 +56,6 @@ public class MetricServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRequestURI("/api/v1/app/version");
         request.setMethod("GET");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        MetricGatheringResponseWrapper responseWrapper = new MetricGatheringResponseWrapper(response, REQUEST_ID);
         metricService.collectRequestResponseData(request, responseWrapper, REQUEST_ID);
         MetricDataRecord mdr = metricService.findMetricDataRecordByRequestId(REQUEST_ID);
         assertNotNull(mdr);
@@ -71,8 +75,6 @@ public class MetricServiceTest {
     @Test
     public void testGetAllRequestResponseMetrics() throws IOException {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        MetricGatheringResponseWrapper responseWrapper = new MetricGatheringResponseWrapper(response, REQUEST_ID);
         metricService.collectRequestResponseData(request, responseWrapper, REQUEST_ID);
         JsonObject payload = metricService.getAllRequestResponseMetrics();
         assertNotNull(payload);
@@ -82,8 +84,6 @@ public class MetricServiceTest {
     @Test
     public void testFindMetricDataRecordByRequestId() throws IOException {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        MetricGatheringResponseWrapper responseWrapper = new MetricGatheringResponseWrapper(response, REQUEST_ID);
         metricService.collectRequestResponseData(request, responseWrapper, REQUEST_ID);
         MetricDataRecord mdr = metricService.findMetricDataRecordByRequestId(REQUEST_ID);
         assertNotNull(mdr);

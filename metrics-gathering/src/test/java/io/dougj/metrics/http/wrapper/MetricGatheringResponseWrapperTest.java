@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(JUnit4.class)
@@ -21,11 +22,14 @@ public class MetricGatheringResponseWrapperTest {
     private final static String REQUEST_ID = UUID.randomUUID().toString();
 
     private MetricGatheringResponseWrapper responseWrapper;
+    private Instant now;
 
     @Before
     public void setup() throws IOException {
         MockHttpServletResponse response = new MockHttpServletResponse();
         responseWrapper = new MetricGatheringResponseWrapper(response, REQUEST_ID);
+        now = Instant.now();
+        responseWrapper.setProcessingStartTime(now);
     }
 
     @Test
@@ -50,5 +54,10 @@ public class MetricGatheringResponseWrapperTest {
     public void testGetProcessingStartTime() {
         Instant responseProcessingStartTime = responseWrapper.getProcessingStartTime();
         assertNotNull(responseProcessingStartTime);
+    }
+
+    @Test
+    public void testSetProcessingStartTime() throws IOException {
+        assertEquals(now, responseWrapper.getProcessingStartTime());
     }
 }
